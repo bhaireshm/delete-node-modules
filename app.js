@@ -18,6 +18,7 @@ function readLine() {
         try {
             if (pathName != null || pathName != undefined) {
                 console.log('\nprocessing please wait...\n');
+                pathName = pathName.replace("\\node_modules", "");
                 const folders = fs.readdirSync(pathName);
                 checkFolder(folders);
             } else {
@@ -35,7 +36,9 @@ function readLine() {
 // check all the folders for node_modules folder if present delete it.
 function checkFolder(fldrs) {
     fldrs.forEach(fldr => {
-        // console.log(fldr);
+        const stats = fs.statSync(fldr);
+        console.log(fldr);
+
         if (fldr == deleteFolderName) {
             let name = pathName + '\\' + fldr + '\\';
 
@@ -45,9 +48,18 @@ function checkFolder(fldrs) {
             });
         } else {
             // check for the inner folders
-            console.log("node_modules folder not found");
+
+            if (stats.isDirectory()) console.log("node_modules not found in " + fldr + " folder");
             return;
         }
+    });
+}
+
+function checkChildFolder(foldrName) {
+    let packageFolders = fs.readdirSync(foldrName);
+    packageFolders.forEach(pf => {
+        checkChildFolder(pf);
+        deleteFolder(`${foldrName}\\${pf}`);
     });
 }
 
