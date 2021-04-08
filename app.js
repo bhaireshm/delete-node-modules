@@ -77,7 +77,7 @@ function deleteFolder(path) {
 
 function print(err) {
     console.log("----------------------------------------------");
-    console.log(err.info);
+//     console.log(err.info);
     console.error(err.message);
     console.log("----------------------------------------------");
     return;
