@@ -37,7 +37,7 @@ function readLine() {
 function checkFolder(fldrs) {
     fldrs.forEach(fldr => {
         const stats = fs.statSync(fldr);
-        console.log(fldr);
+//         console.log(fldr);
 
         if (fldr == deleteFolderName) {
             let name = pathName + '\\' + fldr + '\\';
