@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon main",
+    "start": "node main",
+    "watch": "nodemon main",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
