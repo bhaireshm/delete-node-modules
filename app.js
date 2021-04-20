@@ -1,15 +1,13 @@
-// get the current folder
 const fs = require("fs");
-const readline = require("readline");
 const path = require("path");
-const { exit } = require("process");
+const readline = require("readline");
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-var pathName;
+var pathName = "";
 var deleteFolderName = "node_modules";
 
 readLine();
@@ -21,6 +19,8 @@ function readLine() {
       if (pathName != null || pathName != undefined) {
         console.log("\nprocessing please wait...\n");
         pathName = pathName.replace("\\node_modules", "");
+        pathName = pathName.replace(`"`, "");
+
         const folders = fs.readdirSync(pathName);
         checkFolder(folders);
       } else {
@@ -30,7 +30,7 @@ function readLine() {
       print(err);
     } finally {
       rl.close();
-      //   readLine();
+      readLine();
     }
   });
 }
@@ -42,21 +42,14 @@ function checkFolder(fldrs) {
     // console.log(fldr);
 
     if (fldr == deleteFolderName) {
-      // pathName + '\\' + fldr + '\\'
       let name = path.join(pathName, fldr, "\\");
-      //   console.log(name);
 
       let packageFolders = fs.readdirSync(name);
       if (packageFolders.length > 0) {
         packageFolders.forEach((pf) => {
           const p = path.join(name, pf);
-          // console.log(p);
-
-          deleteFolder(p); //${name}\\${pf}
+          deleteFolder(p);
         });
-        
-        exit(0);
-        
       } else {
         console.log(new Error("node_modules folder is empty"));
         deleteFolder(fldr);
