@@ -1,10 +1,19 @@
 const fs = require("fs");
 const path = require("path");
 const readline = require("readline");
+const {
+  log,
+  logError,
+  logSuccess,
+  logFileDeleted,
+  logFolderDeleted,
+} = require("./logger");
 
-var pathName = "";
+var completePathName = "";
 var deleteFolderName = "node_modules";
+var currentNodeModulePath = path.join(__dirname, "");
 
+// Start the process
 readLine();
 
 function readLine() {
@@ -14,81 +23,106 @@ function readLine() {
   });
 
   rl.question("\nEnter Complete path: ", (ans) => {
-    pathName = ans;
+    completePathName = ans;
     try {
-      if (pathName != null || pathName != undefined) {
-        console.log("\nprocessing please wait...\n");
-        pathName = pathName.replace("\\node_modules", "");
-        pathName = pathName.replace(/"/g, "");
+      if (completePathName != null || completePathName != undefined) {
+        logSuccess("Process started...");
 
-        const folders = fs.readdirSync(pathName);
-        checkFolder(folders);
+        completePathName = completePathName.replace("\\node_modules", "");
+        completePathName = completePathName.replace(/"/g, "");
+
+        if (completePathName === currentNodeModulePath) {
+          log("You cannot delete current project's node_modules");
+        } else {
+          const folders = fs.readdirSync(completePathName);
+
+          if (folders && folders.length > 0) {
+            if (folders.some((f) => f == deleteFolderName)) {
+              // Check for the node_modules folder
+              checkFolderForNodeModules(folders, completePathName);
+            } else {
+              log("node_modules folder not found!!");
+              return;
+            }
+          } else {
+            log("No folders found in the path.");
+            return;
+          }
+        }
       } else {
-        console.log("Path not found");
+        log("Path not found");
       }
     } catch (err) {
       print(err);
     } finally {
-      pathName = "";
-      console.log("\nprosess completed.");
       rl.close();
+      completePathName = "";
+      logSuccess("Process completed.");
       readLine();
     }
   });
 }
 
-// check all the folders for node_modules folder if present delete it.
-function checkFolder(fldrs) {
-  fldrs.forEach((fldr) => {
-    // const stats = fs.statSync(fldr);
-    // console.log(fldr);
+// check all the folders, if node_modules folder present delete it.
+function checkFolderForNodeModules(fldrs) {
+  fldrs.forEach((packageFolderName, i) => {
+    let packageFolderPath = path.join(
+      completePathName,
+      packageFolderName,
+      "\\"
+    );
 
-    if (fldr == deleteFolderName) {
-      let name = path.join(pathName, fldr, "\\");
-
-      let packageFolders = fs.readdirSync(name);
-      if (packageFolders.length > 0) {
-        packageFolders.forEach((pf) => {
-          const p = path.join(name, pf);
-          deleteFolder(p);
-        });
-      } else {
-        console.log(new Error("node_modules folder is empty"));
-        deleteFolder(fldr);
-      }
-    } else {
-      //   console.log(new Error("node_modules folder is empty / not found"));
-      // check for the inner folders
-      //   if (stats.isDirectory())
-      //     console.log("node_modules not found in " + fldr + " folder");
-      //   return;
-    }
+    // Read the node_modules for installed packages
+    readPackageFoldersAndDelete(packageFolderPath, packageFolderName);
   });
 }
 
-function checkChildFolder(foldrName) {
-  let packageFolders = fs.readdirSync(foldrName);
-  packageFolders.forEach((pf) => {
-    checkChildFolder(pf);
-    deleteFolder(`${foldrName}\\${pf}`);
-  });
+function readPackageFoldersAndDelete(packageFolderPath, packageFolderName) {
+  let packageChildFolders = fs.readdirSync(packageFolderPath);
+  if (packageChildFolders.length > 0) {
+    packageChildFolders.forEach((packageChildFolder) => {
+      const p = path.join(packageFolderPath, packageChildFolder);
+
+      if (fs.lstatSync(p).isDirectory()) {
+        // recurse folder
+        readPackageFoldersAndDelete(p);
+      } else {
+        // delete file
+        deleteFile(p, packageFolderPath);
+      }
+    });
+
+    deleteFolder(packageFolderPath);
+  } else {
+    deleteFolder(packageFolderPath);
+    log("node_modules folder is empty");
+  }
 }
 
 function deleteFolder(path) {
   try {
     fs.rmdirSync(path, {
       recursive: true,
-      retryDelay: 100,
+      retryDelay: 10,
     }); // removes folder and its content
-    console.log("Deleted Path : " + path);
+    logFolderDeleted("[Deleted Path] " + path);
+  } catch (err) {
+    print(err);
+  }
+}
+
+function deleteFile(file, path) {
+  try {
+    fs.unlinkSync(file);
+    logFileDeleted("[Deleted File] " + file);
   } catch (err) {
     print(err);
   }
 }
 
 function print(err) {
-  console.log("----------------------------------------------");
-  console.log(err);
-  console.log("----------------------------------------------");
+  log("----------------------------------------------");
+  logError(err);
+  log("----------------------------------------------");
   return;
 }

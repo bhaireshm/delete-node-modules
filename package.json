@@ -1,17 +1,18 @@
 {
   "name": "delete_node_modules",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node main",
-    "watch": "nodemon main",
+    "start": "node app.js",
+    "watch": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^4.1.1",
     "nodemon": "^2.0.7"
   }
 }
