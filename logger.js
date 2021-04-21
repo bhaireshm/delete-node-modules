@@ -1,11 +1,11 @@
 const chalk = require("chalk");
-
+var logName = "";
 function log(msg) {
-  console.log("\n" + chalk.yellowBright(msg));
+  console.log("\n" + chalk.yellowBright(logName + msg));
 }
 
 function logSuccess(msg) {
-  console.log("\n" + chalk.greenBright(msg));
+  console.log("\n" + chalk.greenBright(logName + msg));
 }
 
 function logFileDeleted(msg) {
@@ -17,7 +17,11 @@ function logFolderDeleted(msg) {
 }
 
 function logError(msg) {
-  console.log(new Error(msg));
+  console.log(
+    chalk.red("---------------------------------------------------\n"),
+    chalk.red(msg),
+    chalk.red("\n---------------------------------------------------")
+  );
 }
 
 module.exports = {
@@ -26,4 +30,5 @@ module.exports = {
   logSuccess,
   logFileDeleted,
   logFolderDeleted,
+  chalk,
 };
