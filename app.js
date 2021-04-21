@@ -51,6 +51,7 @@ function readLine() {
                   completePathName = completePathName.replace(/"/g, "");
 
                   if (completePathName === currentNodeModulePath) {
+                    // if (completePathName === "") {
                     log("You cannot delete current project's node_modules");
                   } else {
                     const folders = fs.readdirSync(completePathName);
