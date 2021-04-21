@@ -27,10 +27,10 @@ if exist "./node_modules" (
 pause
 
 :installPackages
-echo Installing required packages please wait
-npm install && npm start
+echo Installing required packages please wait...
+npm install && node app.js
 
 :startApp
 @REM Executing npm command in cmd prompt
 cls
-npm start
+node app.js
