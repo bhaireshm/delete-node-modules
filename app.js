@@ -26,7 +26,7 @@ function readLine() {
   });
 
   rl.question(
-    "\nEnter Complete path (Enter zero to stop): ",
+    "\nEnter Complete path (Enter zero to exit): ",
     (userEnteredPaths) => {
       if (!isEmpty(userEnteredPaths) && userEnteredPaths == "0") {
         log("Application stopped.");
