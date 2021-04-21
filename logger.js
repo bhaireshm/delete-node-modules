@@ -17,7 +17,9 @@ function logFolderDeleted(msg) {
 }
 
 function logError(msg) {
+  console.log("----------------------------------------------");
   console.log(new Error(msg));
+  console.log("----------------------------------------------");
 }
 
 module.exports = {
