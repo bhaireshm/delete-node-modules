@@ -19,7 +19,7 @@ function readLine() {
       if (pathName != null || pathName != undefined) {
         console.log("\nprocessing please wait...\n");
         pathName = pathName.replace("\\node_modules", "");
-        pathName = pathName.replace(`"`, "");
+        pathName = pathName.replace(/"/g, "");
 
         const folders = fs.readdirSync(pathName);
         checkFolder(folders);
