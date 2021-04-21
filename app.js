@@ -2,18 +2,18 @@ const fs = require("fs");
 const path = require("path");
 const readline = require("readline");
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
 var pathName = "";
 var deleteFolderName = "node_modules";
 
 readLine();
 
 function readLine() {
-  rl.question("Enter Complete path: ", (ans) => {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  rl.question("\nEnter Complete path: ", (ans) => {
     pathName = ans;
     try {
       if (pathName != null || pathName != undefined) {
@@ -29,6 +29,8 @@ function readLine() {
     } catch (err) {
       print(err);
     } finally {
+      pathName = "";
+      console.log("\nprosess completed.");
       rl.close();
       readLine();
     }
@@ -87,7 +89,6 @@ function deleteFolder(path) {
 function print(err) {
   console.log("----------------------------------------------");
   console.log(err);
-  console.error(err.message);
   console.log("----------------------------------------------");
   return;
 }
