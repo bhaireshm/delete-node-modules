@@ -5,3 +5,4 @@ Feature pending:
 * Implement passing multiple paths at once
 * Increase the performance
 * Deleting child folders listing is pending
+* Loading spinner
