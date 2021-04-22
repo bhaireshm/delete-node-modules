@@ -1,7 +1,7 @@
 # delete_node_modules
 Delete node_modules folder and its content faster
 
-* Click **<a id="raw-url" href="https://raw.githubusercontent.com/bhaireshm/delete_node_modules/master/getAPP.bat">Download</a>** and save the file as batch script with the name getAPP.bat and click on the downloaded file, it automatically installs application and required packages.
+* Click **<a id="raw-url" target="_blank" href="https://raw.githubusercontent.com/bhaireshm/docs/master/delete_node_modules_repo/getAPP.bat">Download</a>** and save the file as batch script with the name getAPP.bat and click on the downloaded file, it automatically installs application and required packages.
 
 # Steps
 * Start the project click on: **start** or **getAPP** batch file.
