@@ -140,11 +140,8 @@ function readPackageFoldersAndDelete(packageFolderPath, packageFolderName) {
 
 function deleteFolder(path) {
   try {
-    fs.rmdirSync(path, {
-      recursive: true,
-      retryDelay: 10,
-    }); // removes folder and its content
-    logFolderDeleted("[Deleted Path] " + path);
+    fs.rmdirSync(path, { recursive: true, retryDelay: 5 });
+    logFolderDeleted(path);
   } catch (err) {
     logError(err.message);
   }
@@ -153,7 +150,7 @@ function deleteFolder(path) {
 function deleteFile(file, path) {
   try {
     fs.unlinkSync(file);
-    logFileDeleted("[Deleted File] " + file);
+    logFileDeleted(file);
   } catch (err) {
     logError(err.message);
   }

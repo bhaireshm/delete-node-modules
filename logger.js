@@ -5,15 +5,15 @@ function log(msg) {
 }
 
 function logSuccess(msg) {
-  console.log("\n" + chalk.greenBright(logName + msg));
+  console.log("\n" + chalk.green(logName + msg));
 }
 
 function logFileDeleted(msg) {
-  console.log(chalk.magentaBright(msg));
+  console.log("[Deleted] " + chalk.red(msg));
 }
 
 function logFolderDeleted(msg) {
-  console.log(chalk.magentaBright(msg));
+  console.log("[Deleted] " + chalk.red(msg));
 }
 
 function logError(msg) {
