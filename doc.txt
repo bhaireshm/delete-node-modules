@@ -1,3 +1,4 @@
 * Prompt to delete npm cache
 * On start Prompt for deleting node_modules or all folders
 * For all folders deletion ask for confirmation to delete all the folders
+* forcefully stop running command prompt on ctrl + c command

@@ -1,36 +1,32 @@
-@ echo off
+@ ECHO off
 
-REM Check if path exist
-if exist "./node_modules" (
+@REM Check if path exist
+if EXIST "./node_modules" (
 
-    REM Loop in dir files
+    @REM Loop in dir files
     for /f "delims=" %%f in ('dir /a /b /s %1') do (
         
-        REM Check file sizes
+        @REM Check file sizes
         for /f "usebackq delims=" %%s in ('%%f') do (
 
-            REM Check if there is a file bigger than 0 bytes
+            @REM Check if there is a file bigger than 0 bytes
             if %%~zs GTR 0 (
                 @REM The directory is not empty
-                goto startApp
+                GOTO startApp
             )
         )
     )
     @REM The directory is empty
-    goto installPackages
+    CALL :installPackages
 ) else (
     @REM node_modules not found
-    goto installPackages   
+    CALL :installPackages
 )
 
-:end
-pause
-
 :installPackages
-echo Installing required packages please wait...
+ECHO Installing required packages please wait...
 npm install && node app.js
+EXIT /B 0
 
 :startApp
-@REM Executing npm command in cmd prompt
-cls
 node app.js
