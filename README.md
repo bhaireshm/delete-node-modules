@@ -5,7 +5,7 @@ Delete node_modules folder and its content faster
 
 # Steps
 * Start the project click on: **start** or **getAPP** batch file.
-* On click of getAPP.bat file it takes the latest application.
+* On click of getAPP.bat file it takes the latest application from git.
 * Copy and paste the path in which you want to delete node_modules folder.
 * Deletes all the packages and its child folders.
-* Can pass multiple paths at once separated comma(,).
+* Can pass multiple paths at once separated by comma(,).
