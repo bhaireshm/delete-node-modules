@@ -6,14 +6,18 @@ const {
   log,
   logError,
   logSuccess,
+  logStatus,
   logFileDeleted,
   logFolderDeleted,
+  chalk,
 } = require("./logger");
 
 var completePathName = "";
 var deleteFolderName = "node_modules";
 var currentNodeModulePath = path.join(__dirname, "");
 var rl;
+var logDataArr = [];
+var logData = {};
 
 // Start the process
 readLine();
@@ -32,13 +36,17 @@ function readLine() {
         exit(0);
       } else {
         logSuccess("Process started...");
+        var startedAt = Date.now();
 
         if (!isEmpty(userEnteredPaths)) {
           userEnteredPaths = userEnteredPaths.split(",");
 
           if (!isEmpty(userEnteredPaths)) {
             userEnteredPaths.forEach((uep) => {
+              startedAt = Date.now();
               completePathName = uep;
+              logData["path"] = uep;
+
               log("Checking path: " + completePathName + "\n");
 
               try {
@@ -75,27 +83,33 @@ function readLine() {
                 logError(err);
                 // logError(err.message);
               } finally {
-                exitApp();
+                exitApp(startedAt, "");
               }
             });
           } else {
             log("Path not found");
-            exitApp();
+            exitApp(startedAt, "invalid");
           }
         } else {
           log("Path cannot be empty");
-          exitApp();
+          exitApp(startedAt, "invalid");
         }
       }
     }
   );
 }
 
-function exitApp() {
+function exitApp(startedAt, status) {
   rl.close();
   rl = null;
   completePathName = "";
-  logSuccess("Process completed.");
+  const elapsedTime = Math.floor((Date.now() - startedAt) / 1000) + "s";
+  logData["elapsedtime"] = elapsedTime;
+  logData["status"] = status ? status : "completed";
+  logDataArr.push(logData);
+  logData = {};
+  logStatus(logDataArr);
+  // logSuccess("Process completed. Elapsed time: " + elapsedTime + "s");
   readLine();
 }
 

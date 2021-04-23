@@ -26,7 +26,7 @@ if EXIST "./node_modules" (
 :installPackages
 ECHO Installing required packages please wait...
 npm install && node app.js
-EXIT /B 0
+EXIT 0
 
 :startApp
 node app.js

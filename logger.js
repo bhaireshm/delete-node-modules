@@ -24,9 +24,14 @@ function logError(msg) {
   );
 }
 
+function logStatus(logData) {
+  console.table(logData, ["status", "elapsedtime", "path"]);
+}
+
 module.exports = {
   log,
   logError,
+  logStatus,
   logSuccess,
   logFileDeleted,
   logFolderDeleted,
