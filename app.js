@@ -19,6 +19,43 @@ var rl;
 var logDataArr = [];
 var logData = {};
 
+// const prompt = require("prompt");
+
+// const properties = [
+//   {
+//     name: "name",
+//     description: "Your name",
+//     type: "string",
+//     required: true,
+//   },
+//   {
+//     name: "surname",
+//     description: "Your surname",
+//     type: "string",
+//     required: true,
+//     message: "Please dont use the demo credentials",
+//     conform: function (surname) {
+//       var name = prompt.history("name").value;
+//       return name !== "John" || surname !== "Smith";
+//     },
+//   },
+// ];
+
+// prompt.start();
+
+// prompt.get(properties, function (err, result) {
+//   if (err) {
+//     return onErr(err);
+//   }
+//   console.log("  name: " + result.name);
+//   console.log("  surname: " + result.surname);
+// });
+
+// function onErr(err) {
+//   console.log(err);
+//   return 1;
+// }
+
 // Start the process
 readLine();
 
