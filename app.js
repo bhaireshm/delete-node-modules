@@ -56,6 +56,35 @@ var logData = {};
 //   return 1;
 // }
 
+// // Ask user
+// rl.question(
+//   "\n1.Delete only node_modules folder.\n2. Delete all data.",
+//   (option) => {
+//     if (option == "2") {
+//       // Confirm to delete all
+//     } else if (option == "1") {
+//       // Delete node_modules
+//       readLine();
+//     } else {
+//       // Ask user again
+//       console.info("Invalid option");
+//     }
+
+//     console.info("Note: Don't close the the terminal.");
+//     console.info("Process started please wait...");
+
+//     deleteAllData(directory);
+//   }
+// );
+
+// function deleteAllData() {
+//   const rimraf = require("rimraf");
+//   rimraf(directory, function (err) {
+//     if (err) console.error(err);
+//     completedLog();
+//   });
+// }
+
 // Start the process
 readLine();
 
