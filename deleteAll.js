@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const readline = require("readline");
 const fileName = "deleteAll.js";
 var directory, startedAt;
@@ -24,15 +26,22 @@ rl.question(
 
 function deleteAllData() {
   const rimraf = require("rimraf");
-  rimraf(directory, function (err) {
-    if (err) console.error(err);
-    completedLog();
-  });
+  try {
+    const folders = fs.readdirSync(directory);
+    folders.forEach((folder) => {
+      const p = path.join(directory, folder);
+      rimraf(p, function (err) {
+        if (err) console.error(err);
+        // console.info("Deleted: ", p);
+        completedLog(p);
+      });
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 function readFolderAndDelete(dir) {
-  const fs = require("fs");
-  const path = require("path");
   const folders = fs.readdirSync(dir);
   folders.forEach((f) => {
     try {
@@ -50,9 +59,9 @@ function readFolderAndDelete(dir) {
   completedLog();
 }
 
-function completedLog() {
-  console.info(`\nAll data deleted in "${directory}" path.`);
+function completedLog(p = directory) {
+  console.info(`\nAll data deleted in "${p}" path.`);
   const elapsedTime = Math.floor((Date.now() - startedAt) / 1000) + "s";
   console.log("Elapsed time", elapsedTime);
-  process.exit(-1);
+  // process.exit(-1);
 }
