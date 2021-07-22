@@ -1,39 +1,47 @@
 const fs = require("fs");
 const path = require("path");
 const readline = require("readline");
+const rimraf = require("rimraf");
+
 const fileName = "deleteAll.js";
-var directory, startedAt;
+var directories, startedAt, rl;
 
-var rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+readLine();
 
-rl.question(
-  "\nEnter Complete path (Enter to select currentpath): ",
-  (userEnterdPath) => {
+function readLine() {
+  rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  rl.question("\nEnter Complete path (Enter to select currentpath): ", (userEnterdPath) => {
     userEnterdPath = userEnterdPath.replace(/"/g, "");
+    userEnterdPath = userEnterdPath.split(",");
     console.log("Path: ", userEnterdPath);
-    directory = userEnterdPath || process.cwd();
+    directories = userEnterdPath;
     startedAt = Date.now();
     console.info("Note: Don't close the the terminal.");
     console.info("Process started please wait...");
 
-    // readFolderAndDelete(directory); // with logs
-    deleteAllData(directory);
-  }
-);
+    // readFolderAndDelete(directories); // with logs
+    deleteAllData(directories);
 
-function deleteAllData() {
-  const rimraf = require("rimraf");
+    rl.close();
+  });
+}
+
+function deleteAllData(directories) {
   try {
-    const folders = fs.readdirSync(directory);
-    folders.forEach((folder) => {
-      const p = path.join(directory, folder);
-      rimraf(p, function (err) {
-        if (err) console.error(err);
-        // console.info("Deleted: ", p);
-        completedLog(p);
+    directories.forEach((directory, i) => {
+      console.log("inside loop", directory);
+
+      const folders = fs.readdirSync(directory);
+      folders.forEach((folder) => {
+        const p = path.join(directory, folder);
+        rimraf(p, function (err) {
+          if (err) console.error(err);
+          // console.info("Deleted: ", p);
+          completedLog(p, directories.length, i);
+        });
       });
     });
   } catch (error) {
@@ -59,9 +67,20 @@ function readFolderAndDelete(dir) {
   completedLog();
 }
 
-function completedLog(p = directory) {
+function completedLog(p = directories, totLen = 0, len = 0) {
   console.info(`\nAll data deleted in "${p}" path.`);
-  const elapsedTime = Math.floor((Date.now() - startedAt) / 1000) + "s";
-  console.log("Elapsed time", elapsedTime);
   // process.exit(-1);
+
+  console.log({ totLen, len });
+
+  if (len > 0 && totLen == len) {
+    const elapsedTime = Math.floor((Date.now() - startedAt) / 1000) + "s";
+    console.log("Elapsed time", elapsedTime);
+
+    if (rl) rl.close();
+    rl = null;
+
+    // restart
+    readLine();
+  }
 }
