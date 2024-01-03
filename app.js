@@ -11,14 +11,15 @@ const {
   logFolderDeleted,
   chalk,
 } = require("./logger");
+const rimraf = require('rimraf');
 
-var completePathName = "";
-var deleteFolderName = "node_modules";
-var currentNodeModulePath = path.join(__dirname, "");
-var rl;
-var logDataArr = [];
-var logData = {};
-var isDeleteAll = false;
+let completePathName = "";
+let deleteFolderName = "node_modules";
+let currentNodeModulePath = path.join(__dirname, "");
+let rl;
+let logDataArr = [];
+let logData = {};
+let isDeleteAll = false;
 
 // const prompt = require("prompt");
 // const properties = [];
