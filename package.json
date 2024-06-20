@@ -1,6 +1,6 @@
 {
   "name": "@bhairesh/dnm",
-  "version": "0.1.0",
+  "version": "1.5.0",
   "description": "Delete node modules from the given directory, including nested node modules",
   "main": "./dist/dnm.js",
   "bin": {
