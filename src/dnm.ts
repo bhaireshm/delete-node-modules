@@ -9,6 +9,8 @@ const deleteFolderName = 'node_modules';
 let isDeleteAll = false;
 
 function askUser() {
+  isDeleteAll = false;
+
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -20,8 +22,6 @@ function askUser() {
       rl.close();
       if (option === '2') {
         isDeleteAll = true;
-        log("\nNote: Don't close the terminal.");
-        log('Process started please wait...');
         readLine();
       } else if (option === '1') {
         readLine();
@@ -30,6 +30,7 @@ function askUser() {
         exit(0);
       } else {
         logError('Invalid option');
+        isDeleteAll = false;
         askUser();
       }
     }
@@ -122,8 +123,8 @@ async function deleteAllData(dir: string) {
       await rimrafPromise(fullPath);
       logFolderDeleted(fullPath);
     }
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    logError(error?.message || error);
   }
 }
 
