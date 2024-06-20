@@ -129,18 +129,34 @@ async function deleteAllData(dir: string) {
 }
 
 async function deleteNodeModules(dir: string) {
+  const ignoreDotFolders = [".git", ".cache", ".vscode", ".idea"];
+
+  const nodeModulesPath = path.join(dir, dir.includes('node_modules') ? '' : deleteFolderName);
+  if (await exists(nodeModulesPath) && nodeModulesPath !== currentNodeModulePath) {
+    await rimrafPromise(nodeModulesPath);
+    logFolderDeleted(nodeModulesPath);
+  }
+
   const directories = await fs.promises.readdir(dir);
   for (const directory of directories) {
-    const fullPath = path.join(dir, directory);
-    const nodeModulesPath = path.join(fullPath, deleteFolderName);
+    if (ignoreDotFolders.some(d => directory.startsWith(d))) continue;
 
-    if (await exists(nodeModulesPath) && fullPath !== currentNodeModulePath) {
-      await rimrafPromise(nodeModulesPath);
-      logFolderDeleted(nodeModulesPath);
+    const fullPath = path.join(dir, directory);
+    const stat = await fs.promises.lstat(fullPath);
+
+    // If other than directory continue
+    if (!stat.isDirectory()) continue;
+
+    const nestedNodeModulesPath = path.join(fullPath, deleteFolderName);
+
+    // If directory and has node_modules and not current directory's node_modules
+    if (await exists(nestedNodeModulesPath) && fullPath !== currentNodeModulePath) {
+      await rimrafPromise(nestedNodeModulesPath);
+      logFolderDeleted(nestedNodeModulesPath);
     }
-    if ((await fs.promises.lstat(fullPath)).isDirectory()) {
-      await deleteNodeModules(fullPath);
-    }
+
+    // If its just a directory and doesn't have node_modules recursive
+    if (stat.isDirectory()) await deleteNodeModules(fullPath);
   }
 }
 

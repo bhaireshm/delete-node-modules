@@ -45,7 +45,7 @@ export function logError(message: string) {
 }
 
 export function logFolderDeleted(message: string) {
-  console.log(colours.fg.red, `DELETED: ${message}`, colours.reset);
+  console.log(colours.fg.red, `[DELETED] ${message}`, colours.reset);
 }
 
 export function logStatus(logData: any) {
