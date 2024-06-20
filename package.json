@@ -1,20 +1,32 @@
 {
-  "name": "delete_node_modules",
-  "version": "1.4.2",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js",
-    "watch": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "@bhairesh/dnm",
+  "version": "0.1.0",
+  "description": "Delete node modules from the given directory, including nested node modules",
+  "main": "./dist/dnm.js",
+  "bin": {
+    "dnm": "./dist/dnm.js"
   },
-  "keywords": [],
-  "author": "",
+  "scripts": {
+    "build": "sh ./src/build.sh",
+    "watch": "pnpm build && tsc --watch",
+    "start": "pnpm build && node ./dist/dnm.js"
+  },
+  "keywords": [
+    "delete",
+    "node_modules"
+  ],
+  "files": [
+    "dist"
+  ],
+  "author": "Bhairesh M",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bhairesh/delete_node_modules.git"
+  },
+  "homepage": "https://github.com/bhairesh/delete_node_modules",
   "license": "ISC",
-  "dependencies": {
-    "chalk": "^4.1.1",
-    "nodemon": "^2.0.7",
-    "prompt": "^1.1.0",
-    "rimraf": "^3.0.2"
+  "devDependencies": {
+    "@types/node": "^20.14.6",
+    "typescript": "^5.4.5"
   }
 }
