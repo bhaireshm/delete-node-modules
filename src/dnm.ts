@@ -49,7 +49,7 @@ function readLine() {
       rl.close();
 
       if (userEnteredPath === '' || userEnteredPath === '\n') {
-        log('Invalid input. Please enter a valid path.');
+        logError('Invalid input. Please enter a valid path.');
         readLine();
         return;
       }

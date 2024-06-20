@@ -1,15 +1,17 @@
 {
-  "name": "@bhairesh/dnm",
-  "version": "1.5.0",
-  "description": "Delete node modules from the given directory, including nested node modules",
+  "name": "@bhaireshm/dnm",
+  "version": "0.1.0",
+  "description": "Deletes node_modules folders from a given directory and its subdirectories",
   "main": "./dist/dnm.js",
+  "private": false,
   "bin": {
     "dnm": "./dist/dnm.js"
   },
   "scripts": {
     "build": "sh ./src/build.sh",
     "watch": "pnpm build && tsc --build --watch",
-    "start": "pnpm build && node ./dist/dnm.js"
+    "start": "pnpm build && node ./dist/dnm.js",
+    "prepublishOnly": "pnpm build"
   },
   "keywords": [
     "delete",
@@ -21,9 +23,9 @@
   "author": "Bhairesh M",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bhairesh/delete_node_modules.git"
+    "url": "https://github.com/bhaireshm/delete_node_modules.git"
   },
-  "homepage": "https://github.com/bhairesh/delete_node_modules",
+  "homepage": "https://github.com/bhaireshm/delete_node_modules",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.14.6",
