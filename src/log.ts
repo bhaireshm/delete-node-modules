@@ -44,6 +44,10 @@ export function logError(message: string) {
   console.error(colours.fg.red, message, colours.reset);
 }
 
+export function logWarn(message: string) {
+  console.error(colours.fg.yellow, message, colours.reset);
+}
+
 export function logFolderDeleted(message: string) {
   console.log(colours.fg.red, `[DELETED] ${message}`, colours.reset);
 }

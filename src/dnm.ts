@@ -1,11 +1,13 @@
+#!/usr/bin/env node
+
 import * as fs from 'fs';
 import * as path from 'path';
 import { exit } from 'process';
 import * as readline from 'readline';
-import { log, logError, logFolderDeleted, logStatus } from "./log";
+import { log, logError, logFolderDeleted, logStatus, logWarn } from "./log";
 
-const currentNodeModulePath = path.resolve(__dirname, 'node_modules');
-const deleteFolderName = 'node_modules';
+const PROJECT_NAME = 'delete_node_modules';
+const NODE_MODULES_FOLDER_NAME = 'node_modules';
 let isDeleteAll = false;
 
 function askUser() {
@@ -96,13 +98,13 @@ async function processPath(userEnteredPath: string) {
   for (const uep of paths) {
     try {
       if (!await exists(uep)) {
-        log("Path not found");
+        logWarn("Path not found");
         return;
       }
 
       const stats = await fs.promises.lstat(uep);
       if (!stats.isDirectory()) {
-        log('Path not found / Empty Path.');
+        logWarn('Path not found / Empty Path.');
         return;
       }
 
@@ -130,9 +132,14 @@ async function deleteAllData(dir: string) {
 
 async function deleteNodeModules(dir: string) {
   const ignoreDotFolders = [".git", ".cache", ".vscode", ".idea"];
+  const nodeModulesPath = path.join(dir, dir.includes(NODE_MODULES_FOLDER_NAME) ? '' : NODE_MODULES_FOLDER_NAME);
 
-  const nodeModulesPath = path.join(dir, dir.includes('node_modules') ? '' : deleteFolderName);
-  if (await exists(nodeModulesPath) && nodeModulesPath !== currentNodeModulePath) {
+  if (nodeModulesPath.includes(PROJECT_NAME)) {
+    logWarn(`Restricted path '${nodeModulesPath}' ignored.`);
+    return;
+  }
+
+  if (await exists(nodeModulesPath)) {
     await rimrafPromise(nodeModulesPath);
     logFolderDeleted(nodeModulesPath);
   }
@@ -147,10 +154,10 @@ async function deleteNodeModules(dir: string) {
     // If other than directory continue
     if (!stat.isDirectory()) continue;
 
-    const nestedNodeModulesPath = path.join(fullPath, deleteFolderName);
+    const nestedNodeModulesPath = path.join(fullPath, NODE_MODULES_FOLDER_NAME);
 
     // If directory and has node_modules and not current directory's node_modules
-    if (await exists(nestedNodeModulesPath) && fullPath !== currentNodeModulePath) {
+    if (await exists(nestedNodeModulesPath) && !fullPath.includes(PROJECT_NAME)) {
       await rimrafPromise(nestedNodeModulesPath);
       logFolderDeleted(nestedNodeModulesPath);
     }
@@ -163,7 +170,7 @@ async function deleteNodeModules(dir: string) {
 function rimrafPromise(dir: string): Promise<void> {
   return new Promise((resolve, reject) => {
     fs.rm(dir, { recursive: true, force: true }, (error) => {
-      if (error) reject(error);
+      if (error) reject(new Error(error.message));
       else resolve();
     });
   });
