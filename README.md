@@ -14,7 +14,7 @@ This script deletes `node_modules` folders from a given directory and its subdir
 Install the package globally using npm:
 
 ```bash
-npm install -g @bhairesh/dnm
+npm install -g @bhaireshm/dnm
 ```
 
 ### Usage
